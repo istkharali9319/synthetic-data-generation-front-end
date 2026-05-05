@@ -5,7 +5,6 @@ React frontend for the SynthIQ synthetic data generation platform.
 This project is the UI layer for the FastAPI backend in:
 
 - Backend repo: `https://github.com/istkharali9319/synthetic-data-generation-back-end`
-- Local backend folder: `/Users/istkhar/Projects/HTML/synthetic-data-generation`
 
 Frontend repo:
 
