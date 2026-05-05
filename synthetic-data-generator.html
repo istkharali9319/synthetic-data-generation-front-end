@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthIQ Generator</title>
+  <link rel="stylesheet" href="./synthetic-data-theme.css">
+</head>
+<body>
+  <main class="page-shell">
+    <div class="shell-grid">
+      <aside class="sidebar">
+        <a class="brand" href="./synthetic-data-home.html">
+          <span class="brand-badge">SI</span>
+          <span class="brand-copy">
+            <strong>SynthIQ</strong>
+            <span>Synthetic data workspace</span>
+          </span>
+        </a>
+
+        <nav class="nav-group">
+          <a class="nav-link" href="./synthetic-data-dashboard.html"><strong>Dashboard</strong><span class="subtle">Operational summary</span></a>
+          <a class="nav-link active" href="./synthetic-data-generator.html"><strong>Generator</strong><span class="subtle">Dataset setup and preview</span></a>
+          <a class="nav-link" href="./synthetic-data-datasets.html"><strong>Datasets</strong><span class="subtle">Saved and generated outputs</span></a>
+          <a class="nav-link" href="./synthetic-data-reports.html"><strong>Reports</strong><span class="subtle">Quality and audit scores</span></a>
+        </nav>
+
+        <div class="mini-card">
+          <strong>Prompt Tips</strong>
+          <div class="card-copy">Define domain, schema columns, row count, privacy rules, and edge cases you want preserved.</div>
+        </div>
+      </aside>
+
+      <section class="main-stack">
+        <article class="hero-card">
+          <span class="pill">Generator Page</span>
+          <h1>Design realistic synthetic datasets with guided controls.</h1>
+          <p>Use this page to describe the dataset, tune privacy intensity, and preview the generated sample output.</p>
+        </article>
+
+        <section class="split-panel">
+          <article class="panel">
+            <form id="generatorForm" class="field-grid">
+              <div class="field-row">
+                <div>
+                  <label for="domain">Industry Domain</label>
+                  <select id="domain">
+                    <option>Healthcare</option>
+                    <option>Fintech</option>
+                    <option>Retail</option>
+                    <option>EdTech</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="rows">Target Rows</label>
+                  <input id="rows" type="text" value="500000">
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div>
+                  <label for="sensitivity">Privacy Level</label>
+                  <select id="sensitivity">
+                    <option>High</option>
+                    <option>Balanced</option>
+                    <option>Exploratory</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="format">Output Format</label>
+                  <select id="format">
+                    <option>CSV</option>
+                    <option>JSON</option>
+                    <option>Parquet</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="schema">Schema Fields</label>
+                <textarea id="schema" placeholder="customer_id, signup_date, risk_score, plan_type, churn_probability">customer_id, transaction_date, merchant_category, amount, risk_flag, review_outcome</textarea>
+              </div>
+
+              <div>
+                <label for="prompt">Generation Prompt</label>
+                <textarea id="prompt" placeholder="Describe the data pattern you want to simulate.">Generate a fintech transaction dataset with realistic purchase patterns, seasonal spikes, suspicious activity flags, and a balanced mix of approved and reviewed transactions.</textarea>
+              </div>
+
+              <div class="form-actions">
+                <button class="button" type="submit">Generate Preview</button>
+                <button class="button-secondary" type="button" id="sampleBtn">Load Another Sample</button>
+              </div>
+
+              <div class="status-text" id="statusText">Ready to generate.</div>
+            </form>
+          </article>
+
+          <article class="preview-box">
+            <span class="pill">Sample Output</span>
+            <pre id="previewText">No preview generated yet.</pre>
+          </article>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("generatorForm");
+    const previewText = document.getElementById("previewText");
+    const statusText = document.getElementById("statusText");
+    const sampleBtn = document.getElementById("sampleBtn");
+    const promptField = document.getElementById("prompt");
+    const schemaField = document.getElementById("schema");
+
+    function renderPreview() {
+      const domain = document.getElementById("domain").value;
+      const rows = document.getElementById("rows").value.trim();
+      const sensitivity = document.getElementById("sensitivity").value;
+      const format = document.getElementById("format").value;
+      const schema = schemaField.value.trim();
+      const prompt = promptField.value.trim();
+
+      previewText.textContent =
+`Generation Summary
+
+Domain: ${domain}
+Target rows: ${rows}
+Privacy level: ${sensitivity}
+Output format: ${format}
+
+Schema
+${schema}
+
+Prompt
+${prompt}
+
+Sample Rows
+txn_10021 | 2026-04-01 | grocery | 124.95 | low | approved
+txn_10022 | 2026-04-01 | travel  | 983.40 | high | manual_review
+txn_10023 | 2026-04-02 | fuel    | 67.11  | low | approved
+txn_10024 | 2026-04-02 | fashion | 241.10 | med | approved
+
+Quality Notes
+- Temporal distribution preserved
+- Outlier transactions injected at 1.9%
+- Sensitive identifiers masked through synthetic remapping`;
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      statusText.textContent = "Generating preview...";
+      renderPreview();
+      window.setTimeout(() => {
+        statusText.textContent = "Preview ready.";
+      }, 350);
+    });
+
+    sampleBtn.addEventListener("click", () => {
+      schemaField.value = "patient_id, visit_date, diagnosis_code, treatment_cost, admission_type, recovery_days";
+      promptField.value = "Generate a hospital admissions dataset with emergency and scheduled visits, realistic treatment costs, and recovery duration patterns by diagnosis group.";
+      statusText.textContent = "Healthcare sample loaded.";
+    });
+  </script>
+</body>
+</html>

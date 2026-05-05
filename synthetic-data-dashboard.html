@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthIQ Dashboard</title>
+  <link rel="stylesheet" href="./synthetic-data-theme.css">
+</head>
+<body>
+  <main class="page-shell">
+    <div class="shell-grid">
+      <aside class="sidebar">
+        <a class="brand" href="./synthetic-data-home.html">
+          <span class="brand-badge">SI</span>
+          <span class="brand-copy">
+            <strong>SynthIQ</strong>
+            <span>Synthetic data workspace</span>
+          </span>
+        </a>
+
+        <nav class="nav-group">
+          <a class="nav-link active" href="./synthetic-data-dashboard.html"><strong>Dashboard</strong><span class="subtle">Volume, privacy, jobs, health</span></a>
+          <a class="nav-link" href="./synthetic-data-generator.html"><strong>Generator</strong><span class="subtle">Build a new synthetic dataset</span></a>
+          <a class="nav-link" href="./synthetic-data-datasets.html"><strong>Datasets</strong><span class="subtle">Review existing outputs</span></a>
+          <a class="nav-link" href="./synthetic-data-reports.html"><strong>Reports</strong><span class="subtle">Audit and compliance metrics</span></a>
+          <a class="nav-link" href="./synthetic-data-login.html"><strong>Logout</strong><span class="subtle">Return to login page</span></a>
+        </nav>
+
+        <div class="status-box">
+          <strong class="section-title">Workspace Status</strong>
+          <div class="subtle">3 active generation jobs, 1 review pending, privacy guardrails fully enabled.</div>
+        </div>
+      </aside>
+
+      <section class="main-stack">
+        <article class="hero-card">
+          <span class="pill">Dashboard</span>
+          <h1>Monitor synthetic data operations in one place.</h1>
+          <p>Track generation throughput, privacy confidence, schema fidelity, and review queues across teams.</p>
+        </article>
+
+        <section class="metrics-grid">
+          <article class="metric-card">
+            <strong>Datasets Generated</strong>
+            <span>128</span>
+            <div class="card-copy">This month across product, risk, and QA teams.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Privacy Score</strong>
+            <span>98.4%</span>
+            <div class="card-copy">Re-identification checks passed for current release.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Active Jobs</strong>
+            <span>03</span>
+            <div class="card-copy">Two scheduled and one interactive generation flow.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Average Fidelity</strong>
+            <span>94.1%</span>
+            <div class="card-copy">Schema alignment and statistical similarity combined.</div>
+          </article>
+        </section>
+
+        <section class="split-panel">
+          <article class="panel">
+            <h2>Pipeline Snapshot</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Pipeline</th>
+                  <th>Owner</th>
+                  <th>Status</th>
+                  <th>Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Claims QA Sandbox</td>
+                  <td>Data Ops</td>
+                  <td>Running</td>
+                  <td>1.2M rows</td>
+                </tr>
+                <tr>
+                  <td>Retail Churn Simulator</td>
+                  <td>Growth Lab</td>
+                  <td>Ready</td>
+                  <td>420K rows</td>
+                </tr>
+                <tr>
+                  <td>Fintech Fraud Replay</td>
+                  <td>Risk Team</td>
+                  <td>Review</td>
+                  <td>88K events</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel stack">
+            <div class="info-strip">
+              <strong class="section-title">Recommended Next Step</strong>
+              <div class="subtle">Launch a new generator job for the high-risk payments dataset refresh.</div>
+            </div>
+            <div class="mini-card">
+              <strong>Model Mix</strong>
+              <div class="card-copy">Tabular diffusion for finance, agent simulation for support logs, and sequence generation for events.</div>
+            </div>
+            <div class="mini-card">
+              <strong>Compliance Note</strong>
+              <div class="card-copy">Two datasets are awaiting fairness sign-off before export to staging teams.</div>
+            </div>
+            <div class="inline-actions">
+              <a class="button" href="./synthetic-data-generator.html">Create New Dataset</a>
+              <a class="button-secondary" href="./synthetic-data-reports.html">Open Reports</a>
+            </div>
+          </article>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

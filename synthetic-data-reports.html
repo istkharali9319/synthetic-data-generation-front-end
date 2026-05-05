@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthIQ Reports</title>
+  <link rel="stylesheet" href="./synthetic-data-theme.css">
+</head>
+<body>
+  <main class="page-shell">
+    <div class="shell-grid">
+      <aside class="sidebar">
+        <a class="brand" href="./synthetic-data-home.html">
+          <span class="brand-badge">SI</span>
+          <span class="brand-copy">
+            <strong>SynthIQ</strong>
+            <span>Synthetic data workspace</span>
+          </span>
+        </a>
+
+        <nav class="nav-group">
+          <a class="nav-link" href="./synthetic-data-dashboard.html"><strong>Dashboard</strong><span class="subtle">Operational summary</span></a>
+          <a class="nav-link" href="./synthetic-data-generator.html"><strong>Generator</strong><span class="subtle">Build new outputs</span></a>
+          <a class="nav-link" href="./synthetic-data-datasets.html"><strong>Datasets</strong><span class="subtle">Library and exports</span></a>
+          <a class="nav-link active" href="./synthetic-data-reports.html"><strong>Reports</strong><span class="subtle">Risk and fidelity reviews</span></a>
+        </nav>
+
+        <div class="mini-card">
+          <strong>Compliance Summary</strong>
+          <div class="card-copy">All approved datasets passed k-anonymity and nearest-neighbor similarity thresholds.</div>
+        </div>
+      </aside>
+
+      <section class="main-stack">
+        <article class="hero-card">
+          <span class="pill">Reports Page</span>
+          <h1>Turn generation activity into audit-ready evidence.</h1>
+          <p>Use this page to present privacy, fidelity, fairness, and release decisions for synthetic data programs.</p>
+        </article>
+
+        <section class="metrics-grid">
+          <article class="metric-card">
+            <strong>Privacy Compliance</strong>
+            <span>99.1%</span>
+            <div class="card-copy">Latest datasets met internal privacy thresholds.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Bias Alerts</strong>
+            <span>02</span>
+            <div class="card-copy">Two datasets need demographic rebalance before export.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Audit Packages</strong>
+            <span>18</span>
+            <div class="card-copy">Ready for internal and client review this quarter.</div>
+          </article>
+          <article class="metric-card">
+            <strong>Model Drift</strong>
+            <span>Low</span>
+            <div class="card-copy">Template behavior remains stable across recent runs.</div>
+          </article>
+        </section>
+
+        <section class="split-panel">
+          <article class="panel stack">
+            <div class="info-strip">
+              <strong class="section-title">Latest Report Highlights</strong>
+              <div class="subtle">Finance replay datasets retained transaction rarity while lowering direct similarity against source rows.</div>
+            </div>
+            <div class="mini-card">
+              <strong>Privacy Checks</strong>
+              <div class="card-copy">Nearest-neighbor distance, inference resistance, and linkage attack tests all improved over last release.</div>
+            </div>
+            <div class="mini-card">
+              <strong>Fidelity Checks</strong>
+              <div class="card-copy">Correlation structure, seasonality, and class balance remained within accepted variance.</div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h2>Review Queue</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Report</th>
+                  <th>Reviewer</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Payments Bias Review</td>
+                  <td>Compliance</td>
+                  <td>High</td>
+                  <td>Open</td>
+                </tr>
+                <tr>
+                  <td>Claims Fidelity Audit</td>
+                  <td>QA Lead</td>
+                  <td>Medium</td>
+                  <td>In Progress</td>
+                </tr>
+                <tr>
+                  <td>Retail Export Clearance</td>
+                  <td>Data Gov</td>
+                  <td>Low</td>
+                  <td>Approved</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

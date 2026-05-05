@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Business Brochure</title>
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --surface: #fffdf9;
+      --surface-strong: #fff8ef;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #e9ddcc;
+      --accent: #c76b15;
+      --accent-dark: #8f3d12;
+      --shadow: 0 20px 40px rgba(31, 41, 51, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, rgba(199, 107, 21, 0.14), transparent 24%), linear-gradient(180deg, #fff8ef 0%, var(--bg) 100%);
+    }
+    .page { max-width: 1240px; margin: 0 auto; padding: 32px 20px; }
+    .shell { display: grid; grid-template-columns: 390px 1fr; gap: 22px; min-height: calc(100vh - 64px); }
+    .panel { background: rgba(255, 253, 249, 0.94); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); }
+    .sidebar, .preview { display: flex; flex-direction: column; gap: 18px; }
+    .sidebar { padding: 24px; }
+    .preview { padding: 18px; }
+    .eyebrow { display: inline-block; width: fit-content; padding: 7px 12px; border-radius: 999px; background: #fff0dd; color: var(--accent-dark); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1, h2, p { margin-top: 0; }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size: 2.4rem; line-height: 1.05; margin-bottom: 12px; }
+    .intro, .helper-list, .status, .preview-top p { color: var(--muted); line-height: 1.7; }
+    .chat-box, .frame-wrap { background: var(--surface-strong); border: 1px solid var(--line); border-radius: 20px; }
+    .chat-box { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+    .chat-log { display: flex; flex-direction: column; gap: 10px; max-height: 240px; overflow: auto; padding-right: 4px; }
+    .bubble { padding: 12px 14px; border-radius: 18px; line-height: 1.6; font-size: 0.96rem; white-space: pre-wrap; }
+    .bubble-user { align-self: flex-end; background: #d97706; color: #fff; border-bottom-right-radius: 6px; }
+    .bubble-assistant { align-self: flex-start; background: #fff; border: 1px solid var(--line); color: var(--muted); border-bottom-left-radius: 6px; }
+    .controls { display: grid; gap: 12px; }
+    label { font-weight: 700; font-size: 0.92rem; }
+    textarea, button { font: inherit; }
+    textarea { width: 100%; min-height: 150px; border: 1px solid #d8c9b5; border-radius: 16px; padding: 14px 16px; background: #fff; color: var(--ink); line-height: 1.6; resize: vertical; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    button { border: 0; border-radius: 999px; padding: 14px 18px; font-weight: 700; cursor: pointer; }
+    .primary { background: var(--accent); color: #fff; }
+    .secondary { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .preview-top { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; padding: 4px 4px 0; }
+    .frame-wrap { flex: 1; min-height: 680px; background: #fff; overflow: hidden; }
+    iframe { width: 100%; height: 100%; min-height: 680px; border: 0; background: #fff; }
+    .helper-list { margin: 0; padding-left: 18px; }
+    @media (max-width: 980px) { .shell { grid-template-columns: 1fr; } .frame-wrap, iframe { min-height: 560px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="shell">
+      <section class="panel sidebar">
+        <span class="eyebrow">Sales Business</span>
+        <div>
+          <h1>Generate a brochure from your prompt.</h1>
+          <p class="intro">Describe your company and see a brochure-style sales page render live on the right.</p>
+        </div>
+        <div class="chat-box">
+          <div id="chatLog" class="chat-log">
+            <div class="bubble bubble-assistant">Tell me about your company, services, target audience, and tone.</div>
+          </div>
+        </div>
+        <form id="brochureForm" class="controls">
+          <div>
+            <label for="prompt">Brochure prompt</label>
+            <textarea id="prompt" placeholder="Create a modern brochure for a B2B sales consulting company focused on lead generation, CRM optimization, and team coaching."></textarea>
+          </div>
+          <div class="actions">
+            <button class="primary" type="submit">Generate Brochure</button>
+            <button class="secondary" type="button" id="sampleBtn">Use Sample Prompt</button>
+          </div>
+          <div id="status" class="status">Ready</div>
+        </form>
+        <div>
+          <span class="eyebrow">Prompt Tips</span>
+          <ul class="helper-list">
+            <li>Include company type and services.</li>
+            <li>Mention tone like premium, clean, or modern.</li>
+            <li>Add sections like hero, services, testimonial, and contact.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="panel preview">
+        <div class="preview-top">
+          <div>
+            <span class="eyebrow">Live Preview</span>
+            <p id="previewMeta">Your brochure preview will appear here.</p>
+          </div>
+        </div>
+        <div class="frame-wrap"><iframe id="previewFrame" title="Brochure preview"></iframe></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const form = document.getElementById("brochureForm");
+    const promptInput = document.getElementById("prompt");
+    const statusBox = document.getElementById("status");
+    const sampleBtn = document.getElementById("sampleBtn");
+    const previewFrame = document.getElementById("previewFrame");
+    const previewMeta = document.getElementById("previewMeta");
+    const chatLog = document.getElementById("chatLog");
+    const samplePrompt = "Create a premium brochure for a sales growth agency helping SaaS teams with pipeline strategy, team training, and conversion reporting.";
+    function addBubble(text, role) {
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${role === "user" ? "bubble-user" : "bubble-assistant"}`;
+      bubble.textContent = text;
+      chatLog.appendChild(bubble);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function buildDocument(content) {
+      return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Generated Brochure</title><style>body{margin:0;background:#fff;}</style></head><body>${content}</body></html>`;
+    }
+    function buildBrochure(prompt) {
+      return `<section style="font-family:Arial,sans-serif;background:linear-gradient(180deg,#fff8ef 0%,#f5efe6 100%);color:#1f2933;padding:0;">
+  <div style="max-width:960px;margin:0 auto;padding:48px 24px;">
+    <div style="background:#ffffff;border:1px solid #eadfce;border-radius:24px;padding:40px;box-shadow:0 18px 40px rgba(31,41,51,0.08);margin-bottom:24px;">
+      <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:#fff1db;color:#9a3412;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:18px;">Sales Brochure Draft</div>
+      <h1 style="font-size:44px;line-height:1.05;margin:0 0 16px;">${prompt}</h1>
+      <p style="font-size:17px;line-height:1.7;color:#52606d;margin:0 0 22px;">A polished sales business brochure generated from your prompt.</p>
+      <a href="#contact" style="display:inline-block;padding:14px 22px;background:#d97706;color:#ffffff;text-decoration:none;border-radius:999px;font-weight:700;">Book a Consultation</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:24px;">
+      <div style="background:#ffffff;border:1px solid #eadfce;border-radius:20px;padding:24px;"><h3 style="margin:0 0 10px;">Sales Strategy</h3><p style="margin:0;color:#52606d;line-height:1.7;">Create a clear plan for messaging, offers, and pipeline growth.</p></div>
+      <div style="background:#ffffff;border:1px solid #eadfce;border-radius:20px;padding:24px;"><h3 style="margin:0 0 10px;">Team Coaching</h3><p style="margin:0;color:#52606d;line-height:1.7;">Build confident sales conversations and repeatable outreach systems.</p></div>
+      <div style="background:#ffffff;border:1px solid #eadfce;border-radius:20px;padding:24px;"><h3 style="margin:0 0 10px;">Revenue Insights</h3><p style="margin:0;color:#52606d;line-height:1.7;">Track performance and focus on what improves close rates.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:18px;">
+      <div style="background:#ffffff;border:1px solid #eadfce;border-radius:20px;padding:28px;"><h2 style="margin:0 0 12px;">Why clients choose us</h2><p style="margin:0 0 12px;color:#52606d;line-height:1.7;">We transform ideas into structured sales communication that looks credible and sells clearly.</p><p style="margin:0;color:#52606d;line-height:1.7;">This layout works well for brochures, pitch-style landing pages, and service overviews.</p></div>
+      <div id="contact" style="background:#fff7ed;border:1px solid #f3d5b3;border-radius:20px;padding:28px;"><h2 style="margin:0 0 12px;">Contact</h2><p style="margin:0 0 8px;color:#52606d;line-height:1.7;">hello@salesbusiness.com</p><p style="margin:0 0 8px;color:#52606d;line-height:1.7;">+1 (555) 123-4567</p><p style="margin:0;color:#52606d;line-height:1.7;">Let us build your next brochure-ready message.</p></div>
+    </div>
+  </div>
+</section>`;
+    }
+    sampleBtn.addEventListener("click", () => { promptInput.value = samplePrompt; promptInput.focus(); });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const prompt = promptInput.value.trim();
+      if (!prompt) { statusBox.textContent = "Please enter a brochure prompt."; promptInput.focus(); return; }
+      addBubble(prompt, "user");
+      statusBox.textContent = "Generating brochure...";
+      previewMeta.textContent = "Rendering brochure preview.";
+      setTimeout(() => {
+        previewFrame.srcdoc = buildDocument(buildBrochure(prompt));
+        addBubble("Brochure generated and displayed in the preview panel.", "assistant");
+        statusBox.textContent = "Brochure ready";
+        previewMeta.textContent = "Preview generated successfully.";
+      }, 450);
+    });
+    previewFrame.srcdoc = buildDocument(`<section style="font-family:Arial,sans-serif;padding:48px 24px;background:linear-gradient(180deg,#fff8ef 0%,#f3efe7 100%);min-height:100vh;"><div style="max-width:860px;margin:0 auto;background:#fff;border:1px solid #e9ddcc;border-radius:24px;padding:40px;box-shadow:0 20px 40px rgba(31,41,51,0.08);"><div style="display:inline-block;padding:8px 12px;border-radius:999px;background:#fff0dd;color:#8f3d12;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:18px;">Preview Ready</div><h1 style="font-family:Georgia,serif;font-size:42px;line-height:1.05;margin:0 0 16px;color:#1f2933;">Your brochure output will render here.</h1><p style="margin:0;color:#52606d;line-height:1.7;">Use the prompt panel to generate a sales business brochure and see it in this preview area.</p></div></section>`);
+  </script>
+</body>
+</html>

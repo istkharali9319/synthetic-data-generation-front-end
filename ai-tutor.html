@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tutor</title>
+  <style>
+    :root {
+      --bg: #f7f7f8;
+      --sidebar: #ececf1;
+      --panel: #ffffff;
+      --line: #d9d9e3;
+      --ink: #202123;
+      --muted: #6e6e80;
+      --accent: #10a37f;
+      --accent-dark: #0b7a60;
+      --user: #f4f4f6;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; color: var(--ink); background: var(--bg); }
+    .app { min-height: 100vh; display: grid; grid-template-columns: 280px 1fr; }
+    .sidebar { background: var(--sidebar); border-right: 1px solid var(--line); padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+    .brand-badge { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: #fff; }
+    .new-chat, .search-box, .history-item, .info-card, .message-card, .hero, .composer { border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+    .new-chat, .search-box, .history-item, .composer textarea, button { font: inherit; }
+    .new-chat, .search-box, .history-item { padding: 12px 14px; }
+    .new-chat { font-weight: 700; cursor: pointer; text-align: left; }
+    .history { display: grid; gap: 10px; }
+    .history-item strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
+    .history-item span, .info-card p, .info-card li, .topbar span, .status { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+    .info-card { padding: 16px; border-radius: 18px; background: rgba(255, 255, 255, 0.75); }
+    .info-card h2 { margin: 0 0 8px; font-size: 1rem; }
+    .info-card ul { margin: 0; padding-left: 18px; }
+    .main { display: flex; flex-direction: column; min-width: 0; }
+    .topbar { padding: 16px 24px; border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.8); }
+    .topbar strong { display: block; margin-bottom: 4px; }
+    .chat-scroll { flex: 1; overflow: auto; padding: 28px 0 148px; }
+    .messages, .empty-state, .composer-shell { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+    .messages { display: flex; flex-direction: column; gap: 18px; }
+    .hero { padding: 34px; text-align: center; }
+    .hero h1 { margin: 0 0 12px; font-size: 2.2rem; }
+    .hero p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .message-row { display: flex; gap: 14px; align-items: flex-start; }
+    .avatar { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font-size: 0.88rem; font-weight: 700; color: #fff; flex: 0 0 36px; }
+    .avatar-user { background: #111827; }
+    .avatar-bot { background: var(--accent); }
+    .message-card { flex: 1; padding: 16px 18px; line-height: 1.7; white-space: pre-wrap; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04); }
+    .message-card.user { background: var(--user); }
+    .composer-wrap { position: fixed; left: 280px; right: 0; bottom: 0; padding: 18px 20px 24px; background: linear-gradient(180deg, rgba(247,247,248,0) 0%, rgba(247,247,248,0.95) 22%, rgba(247,247,248,1) 100%); }
+    .composer { padding: 12px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06); }
+    .composer textarea { width: 100%; min-height: 86px; border: 0; outline: 0; resize: none; padding: 10px 12px 0; background: transparent; line-height: 1.6; }
+    .composer-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 8px 8px 4px; }
+    .buttons { display: flex; gap: 10px; }
+    button { border: 0; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; }
+    .ghost { background: #ecfdf5; color: var(--accent-dark); }
+    .send { background: var(--accent); color: #fff; }
+    @media (max-width: 960px) { .app { grid-template-columns: 1fr; } .sidebar { border-right: 0; border-bottom: 1px solid var(--line); } .composer-wrap { left: 0; } .chat-scroll { padding-bottom: 200px; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-badge">AT</div><div>AI Tutor</div></div>
+      <button class="new-chat" type="button" id="newChatBtn">+ New Lesson</button>
+      <input class="search-box" type="text" placeholder="Search lessons">
+      <div class="history">
+        <div class="history-item"><strong>Fractions</strong><span>Step-by-step explanation with exercises</span></div>
+        <div class="history-item"><strong>Photosynthesis</strong><span>Simple science explanation</span></div>
+        <div class="history-item"><strong>Python loops</strong><span>Beginner coding lesson</span></div>
+      </div>
+      <div class="info-card">
+        <h2>How to Ask Better</h2>
+        <ul>
+          <li>Mention the topic and class level.</li>
+          <li>Ask for simple or step-by-step teaching.</li>
+          <li>Request examples, practice, or a mini quiz.</li>
+        </ul>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><strong>AI Tutor Conversation</strong><span id="sessionText">Ask a learning question to begin.</span></header>
+      <div class="chat-scroll">
+        <div class="empty-state" id="emptyState"><section class="hero"><h1>What would you like to learn today?</h1><p>Ask about math, science, English, programming, history, or any topic you want explained clearly.</p></section></div>
+        <div class="messages" id="messages" hidden></div>
+      </div>
+      <div class="composer-wrap">
+        <div class="composer-shell">
+          <form class="composer" id="chatForm">
+            <textarea id="question" placeholder="Ask AI Tutor..."></textarea>
+            <div class="composer-actions">
+              <div class="status" id="status">Ready</div>
+              <div class="buttons">
+                <button class="ghost" type="button" id="sampleBtn">Sample Prompt</button>
+                <button class="send" type="submit">Send</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const messages = document.getElementById("messages");
+    const emptyState = document.getElementById("emptyState");
+    const chatForm = document.getElementById("chatForm");
+    const questionInput = document.getElementById("question");
+    const statusEl = document.getElementById("status");
+    const sampleBtn = document.getElementById("sampleBtn");
+    const newChatBtn = document.getElementById("newChatBtn");
+    const sessionText = document.getElementById("sessionText");
+    const samplePrompt = "Explain fractions in a simple step-by-step way for a class 5 student and give 2 practice questions.";
+    function setStatus(text) { statusEl.textContent = text; }
+    function showMessages() { emptyState.hidden = true; messages.hidden = false; }
+    function addMessage(role, text) {
+      showMessages();
+      const row = document.createElement("div");
+      row.className = "message-row";
+      const avatar = document.createElement("div");
+      avatar.className = `avatar ${role === "user" ? "avatar-user" : "avatar-bot"}`;
+      avatar.textContent = role === "user" ? "You" : "AI";
+      const card = document.createElement("div");
+      card.className = `message-card ${role === "user" ? "user" : ""}`.trim();
+      card.textContent = text;
+      row.appendChild(avatar);
+      row.appendChild(card);
+      messages.appendChild(row);
+      row.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+    function resetChat() {
+      messages.innerHTML = "";
+      messages.hidden = true;
+      emptyState.hidden = false;
+      sessionText.textContent = "Ask a learning question to begin.";
+      setStatus("Ready");
+      questionInput.value = "";
+      questionInput.focus();
+    }
+    function buildReply(question) {
+      return `Let's work through your question.\n\nTopic:\n${question}\n\nSimple explanation:\nWe can understand this better by breaking it into small parts and connecting each part to a clear example.\n\nStep-by-step:\n1. Start with the definition.\n2. Look at one easy example.\n3. Repeat the same pattern with a similar question.\n\nPractice:\nTry answering the idea in your own words, then solve one related example by yourself.\n\nQuick challenge:\nWrite a short summary and create one more practice question on the same topic.`;
+    }
+    sampleBtn.addEventListener("click", () => { questionInput.value = samplePrompt; questionInput.focus(); });
+    newChatBtn.addEventListener("click", resetChat);
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const question = questionInput.value.trim();
+      if (!question) { setStatus("Please type a question first."); questionInput.focus(); return; }
+      addMessage("user", question);
+      sessionText.textContent = "Lesson in progress.";
+      setStatus("Preparing tutor response...");
+      setTimeout(() => { addMessage("assistant", buildReply(question)); setStatus("Response ready"); }, 450);
+      questionInput.value = "";
+    });
+  </script>
+</body>
+</html>

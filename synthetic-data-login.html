@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthIQ Login</title>
+  <link rel="stylesheet" href="./synthetic-data-theme.css">
+</head>
+<body>
+  <main class="login-wrap">
+    <section class="login-card">
+      <div class="login-side">
+        <span class="pill">Login Page</span>
+        <h1>Access your synthetic data control room.</h1>
+        <p>
+          Sign in to launch generation pipelines, manage datasets, and review privacy reports from one workspace.
+          This page is designed as the entry point for the full synthetic-data module.
+        </p>
+
+        <div class="badge-grid">
+          <article class="mini-card">
+            <strong>Fast Setup</strong>
+            <div class="card-copy">Move from login to dashboard in one click for demo flows.</div>
+          </article>
+          <article class="mini-card">
+            <strong>Role Visibility</strong>
+            <div class="card-copy">Analyst, ML Engineer, and Compliance Reviewer role presets.</div>
+          </article>
+          <article class="mini-card">
+            <strong>Audit Friendly</strong>
+            <div class="card-copy">Clear handoff into reports and governance pages.</div>
+          </article>
+          <article class="mini-card">
+            <strong>Separate Pages</strong>
+            <div class="card-copy">Every major feature has its own dedicated HTML screen.</div>
+          </article>
+        </div>
+
+        <div class="alert-card">
+          <strong class="section-title">Included Pages</strong>
+          <ul class="info-list">
+            <li>Login page for authentication flow</li>
+            <li>Dashboard page for operational overview</li>
+            <li>Generator page for prompt and schema setup</li>
+            <li>Dataset page for library management</li>
+            <li>Reports page for privacy and quality review</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel">
+        <a class="brand" href="./synthetic-data-home.html">
+          <span class="brand-badge">SI</span>
+          <span class="brand-copy">
+            <strong>SynthIQ</strong>
+            <span>AI synthetic data generator</span>
+          </span>
+        </a>
+
+        <form id="loginForm" class="field-grid" style="margin-top: 24px;">
+          <div>
+            <label for="workEmail">Work Email</label>
+            <input id="workEmail" type="email" placeholder="name@company.com" required>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label for="password">Password</label>
+              <input id="password" type="password" placeholder="Enter your password" required>
+            </div>
+            <div>
+              <label for="role">Role</label>
+              <select id="role">
+                <option>Analyst</option>
+                <option>ML Engineer</option>
+                <option>Compliance Reviewer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="info-strip">
+            <strong class="section-title">Demo Access</strong>
+            <div class="field-note">Use any email and password to enter the static dashboard template.</div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button" type="submit">Login to Dashboard</button>
+            <a class="button-secondary" href="./synthetic-data-home.html">Back</a>
+          </div>
+
+          <div class="status-text" id="statusText">Ready to sign in.</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const statusText = document.getElementById("statusText");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById("workEmail").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        statusText.textContent = "Please fill in your email and password.";
+        return;
+      }
+
+      statusText.textContent = "Login successful. Opening dashboard...";
+      window.setTimeout(() => {
+        window.location.href = "./synthetic-data-dashboard.html";
+      }, 500);
+    });
+  </script>
+</body>
+</html>

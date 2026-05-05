@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthIQ Datasets</title>
+  <link rel="stylesheet" href="./synthetic-data-theme.css">
+</head>
+<body>
+  <main class="page-shell">
+    <div class="shell-grid">
+      <aside class="sidebar">
+        <a class="brand" href="./synthetic-data-home.html">
+          <span class="brand-badge">SI</span>
+          <span class="brand-copy">
+            <strong>SynthIQ</strong>
+            <span>Synthetic data workspace</span>
+          </span>
+        </a>
+
+        <nav class="nav-group">
+          <a class="nav-link" href="./synthetic-data-dashboard.html"><strong>Dashboard</strong><span class="subtle">Operational summary</span></a>
+          <a class="nav-link" href="./synthetic-data-generator.html"><strong>Generator</strong><span class="subtle">Build new outputs</span></a>
+          <a class="nav-link active" href="./synthetic-data-datasets.html"><strong>Datasets</strong><span class="subtle">Library and exports</span></a>
+          <a class="nav-link" href="./synthetic-data-reports.html"><strong>Reports</strong><span class="subtle">Risk and fidelity reviews</span></a>
+        </nav>
+
+        <div class="mini-card">
+          <strong>Library Filters</strong>
+          <div class="card-copy">Use this page to separate approved, draft, and expiring synthetic datasets.</div>
+        </div>
+      </aside>
+
+      <section class="main-stack">
+        <article class="hero-card">
+          <span class="pill">Datasets Page</span>
+          <h1>Review generated datasets before teams export them.</h1>
+          <p>Track ownership, freshness, fidelity, and approval state for each synthetic dataset in your library.</p>
+        </article>
+
+        <article class="table-card">
+          <h2>Dataset Library</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Domain</th>
+                <th>Rows</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Retail Promotion Sandbox</td>
+                <td>Retail</td>
+                <td>920K</td>
+                <td>Growth Lab</td>
+                <td>Approved</td>
+                <td>2 hours ago</td>
+              </tr>
+              <tr>
+                <td>Claims Journey Simulator</td>
+                <td>Healthcare</td>
+                <td>1.8M</td>
+                <td>QA Systems</td>
+                <td>Review</td>
+                <td>Today</td>
+              </tr>
+              <tr>
+                <td>Fraud Replay Batch</td>
+                <td>Fintech</td>
+                <td>88K</td>
+                <td>Risk Team</td>
+                <td>Restricted</td>
+                <td>Yesterday</td>
+              </tr>
+              <tr>
+                <td>Student Success Mock Data</td>
+                <td>EdTech</td>
+                <td>240K</td>
+                <td>ML Ops</td>
+                <td>Approved</td>
+                <td>Apr 29</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <section class="feature-grid">
+          <article class="feature-card">
+            <h2>Export Rules</h2>
+            <p class="card-copy">Only approved datasets can be exported to external staging environments.</p>
+          </article>
+          <article class="feature-card">
+            <h2>Retention Window</h2>
+            <p class="card-copy">Draft datasets expire after 30 days unless renewed by the owning team.</p>
+          </article>
+          <article class="feature-card">
+            <h2>Lineage</h2>
+            <p class="card-copy">Every output links back to a template, model version, and privacy policy set.</p>
+          </article>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
